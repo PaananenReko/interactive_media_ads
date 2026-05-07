@@ -2278,6 +2278,13 @@ abstract class PigeonApiAdsManager(
   abstract fun resume(pigeon_instance: com.google.ads.interactivemedia.v3.api.AdsManager)
 
   /**
+   * Sets the volume for the current ad.
+   *
+   * Volume value between 0 (mute) and 1 (maximum volume).
+   */
+  abstract fun setVolume(pigeon_instance: com.google.ads.interactivemedia.v3.api.AdsManager, volume: Double)
+
+  /**
    * Skips the current ad.
    *
    * `AdsManager.skip()` only skips ads if IMA does not render the 'Skip ad' button.
@@ -2366,6 +2373,30 @@ abstract class PigeonApiAdsManager(
             val wrapped: List<Any?> =
                 try {
                   api.resume(pigeon_instanceArg)
+                  listOf(null)
+                } catch (exception: Throwable) {
+                  InteractiveMediaAdsLibraryPigeonUtils.wrapError(exception)
+                }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel =
+            BasicMessageChannel<Any?>(
+                binaryMessenger,
+                "dev.flutter.pigeon.interactive_media_ads.AdsManager.setVolume",
+                codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pigeon_instanceArg = args[0] as com.google.ads.interactivemedia.v3.api.AdsManager
+            val volumeArg = args[1] as Double
+            val wrapped: List<Any?> =
+                try {
+                  api.setVolume(pigeon_instanceArg, volumeArg)
                   listOf(null)
                 } catch (exception: Throwable) {
                   InteractiveMediaAdsLibraryPigeonUtils.wrapError(exception)

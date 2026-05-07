@@ -93,6 +93,45 @@ void main() {
     await manager.destroy();
   });
 
+  test('setVolume', () async {
+    final volumeCompleter = Completer<double>();
+    final platformManager = TestAdsManager(
+      onSetVolume: (double volume) async {
+        volumeCompleter.complete(volume);
+      },
+    );
+
+    final AdsManager manager = createAdsManager(platformManager);
+    await manager.setVolume(0.5);
+    expect(await volumeCompleter.future, 0.5);
+  });
+
+  test('mute', () async {
+    final volumeCompleter = Completer<double>();
+    final platformManager = TestAdsManager(
+      onSetVolume: (double volume) async {
+        volumeCompleter.complete(volume);
+      },
+    );
+
+    final AdsManager manager = createAdsManager(platformManager);
+    await manager.mute();
+    expect(await volumeCompleter.future, 0.0);
+  });
+
+  test('unmute', () async {
+    final volumeCompleter = Completer<double>();
+    final platformManager = TestAdsManager(
+      onSetVolume: (double volume) async {
+        volumeCompleter.complete(volume);
+      },
+    );
+
+    final AdsManager manager = createAdsManager(platformManager);
+    await manager.unmute();
+    expect(await volumeCompleter.future, 1.0);
+  });
+
   test('adCuePoints', () async {
     final platformManager = TestAdsManager(
       adCuePoints: const <Duration>[Duration(seconds: 5)],

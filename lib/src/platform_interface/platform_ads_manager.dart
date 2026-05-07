@@ -47,6 +47,11 @@ abstract class PlatformAdsManager {
   /// If there is no current ad then the next ad break is discarded.
   Future<void> discardAdBreak();
 
+  /// Sets the volume for the current ad.
+  ///
+  /// [volume] is a value between 0.0 (muted) and 1.0 (maximum volume).
+  Future<void> setVolume(double volume);
+
   /// Stops the ad and all tracking, then releases all assets that were loaded
   /// to play the ad.
   Future<void> destroy();

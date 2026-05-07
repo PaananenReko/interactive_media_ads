@@ -34,6 +34,10 @@ class AdsManagerProxyApi(override val pigeonRegistrar: ProxyApiRegistrar) :
     pigeon_instance.resume()
   }
 
+  override fun setVolume(pigeon_instance: AdsManager, volume: Double) {
+    pigeon_instance.setVolume(volume.toFloat())
+  }
+
   override fun skip(pigeon_instance: AdsManager) {
     pigeon_instance.skip()
   }

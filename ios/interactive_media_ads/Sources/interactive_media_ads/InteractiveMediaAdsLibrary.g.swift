@@ -3204,6 +3204,12 @@ protocol PigeonApiDelegateIMAAdsManager {
   func pause(pigeonApi: PigeonApiIMAAdsManager, pigeonInstance: IMAAdsManager) throws
   /// Resumes the current ad.
   func resume(pigeonApi: PigeonApiIMAAdsManager, pigeonInstance: IMAAdsManager) throws
+  /// Sets the volume for the current ad.
+  ///
+  /// Volume value between 0 (mute) and 1 (maximum volume).
+  func setVolume(
+    pigeonApi: PigeonApiIMAAdsManager, pigeonInstance: IMAAdsManager,
+    volume: Double) throws
   /// Skips the advertisement if the ad is skippable and the skip offset has
   /// been reached.
   func skip(pigeonApi: PigeonApiIMAAdsManager, pigeonInstance: IMAAdsManager) throws
@@ -3329,6 +3335,25 @@ final class PigeonApiIMAAdsManager: PigeonApiProtocolIMAAdsManager {
       }
     } else {
       resumeChannel.setMessageHandler(nil)
+    }
+    let setVolumeChannel = FlutterBasicMessageChannel(
+      name: "dev.flutter.pigeon.interactive_media_ads.IMAAdsManager.setVolume",
+      binaryMessenger: binaryMessenger, codec: codec)
+    if let api = api {
+      setVolumeChannel.setMessageHandler { message, reply in
+        let args = message as! [Any?]
+        let pigeonInstanceArg = args[0] as! IMAAdsManager
+        let volumeArg = args[1] as! Double
+        do {
+          try api.pigeonDelegate.setVolume(
+            pigeonApi: api, pigeonInstance: pigeonInstanceArg, volume: volumeArg)
+          reply(wrapResult(nil))
+        } catch {
+          reply(wrapError(error))
+        }
+      }
+    } else {
+      setVolumeChannel.setMessageHandler(nil)
     }
     let skipChannel = FlutterBasicMessageChannel(
       name: "dev.flutter.pigeon.interactive_media_ads.IMAAdsManager.skip",

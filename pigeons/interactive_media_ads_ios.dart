@@ -655,6 +655,11 @@ abstract class IMAAdsManager extends NSObject {
   /// been reached.
   void skip();
 
+  /// Sets the volume for the current ad.
+  ///
+  /// Volume value between 0 (mute) and 1 (maximum volume).
+  void setVolume(double volume);
+
   /// If an ad break is currently playing, discard it and resume content.
   void discardAdBreak();
 

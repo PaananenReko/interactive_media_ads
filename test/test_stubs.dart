@@ -147,6 +147,7 @@ class TestAdsManager extends PlatformAdsManager {
     this.onPause,
     this.onResume,
     this.onSkip,
+    this.onSetVolume,
     super.adCuePoints = const <Duration>[],
   });
 
@@ -165,6 +166,8 @@ class TestAdsManager extends PlatformAdsManager {
 
   Future<void> Function()? onSkip;
 
+  Future<void> Function(double volume)? onSetVolume;
+
   Future<void> Function()? onDestroy;
 
   @override
@@ -182,6 +185,11 @@ class TestAdsManager extends PlatformAdsManager {
   @override
   Future<void> start(AdsManagerStartParams params) async {
     return onStart?.call(params);
+  }
+
+  @override
+  Future<void> setVolume(double volume) async {
+    return onSetVolume?.call(volume);
   }
 
   @override

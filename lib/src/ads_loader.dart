@@ -188,6 +188,23 @@ class AdsManager {
     return platform.skip();
   }
 
+  /// Sets the volume for the current ad.
+  ///
+  /// [volume] is a value between 0.0 (muted) and 1.0 (maximum volume).
+  Future<void> setVolume(double volume) {
+    return platform.setVolume(volume);
+  }
+
+  /// Mutes the current ad (sets volume to 0.0).
+  Future<void> mute() {
+    return platform.setVolume(0.0);
+  }
+
+  /// Unmutes the current ad (sets volume to 1.0).
+  Future<void> unmute() {
+    return platform.setVolume(1.0);
+  }
+
   /// Discards current ad break and resumes content.
   ///
   /// If there is no current ad then the next ad break is discarded.

@@ -37,8 +37,6 @@ class AdDisplayContainer extends StatelessWidget {
   AdDisplayContainer({
     Key? key,
     required void Function(AdDisplayContainer container) onContainerAdded,
-    void Function(AdDisplayContainer container)? onAdRequestedFullscreen,
-    void Function(AdDisplayContainer container)? onAdRequestedExitFullscreen,
     Iterable<CompanionAdSlot> companionSlots = const <CompanionAdSlot>[],
     TextDirection layoutDirection = TextDirection.ltr,
   }) : this.fromPlatformCreationParams(
@@ -49,20 +47,6 @@ class AdDisplayContainer extends StatelessWidget {
                AdDisplayContainer.fromPlatform(platform: container),
              );
            },
-           onAdRequestedFullscreen: onAdRequestedFullscreen != null
-               ? (PlatformAdDisplayContainer container) {
-                   onAdRequestedFullscreen(
-                     AdDisplayContainer.fromPlatform(platform: container),
-                   );
-                 }
-               : null,
-           onAdRequestedExitFullscreen: onAdRequestedExitFullscreen != null
-               ? (PlatformAdDisplayContainer container) {
-                   onAdRequestedExitFullscreen(
-                     AdDisplayContainer.fromPlatform(platform: container),
-                   );
-                 }
-               : null,
            companionSlots: companionSlots.map(
              (CompanionAdSlot slot) => slot.platform,
            ),

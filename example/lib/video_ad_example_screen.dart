@@ -50,9 +50,6 @@ class _VideoAdExampleScreenState extends State<VideoAdExampleScreen>
   // Whether the ad is currently muted.
   bool _isAdMuted = false;
 
-  // Whether the ad is currently in fullscreen mode.
-  bool _isFullscreen = false;
-
   // Controls the content video player.
   late final VideoPlayerController _contentVideoController;
 
@@ -72,16 +69,6 @@ class _VideoAdExampleScreenState extends State<VideoAdExampleScreen>
 
   late final AdDisplayContainer _adDisplayContainer = AdDisplayContainer(
     companionSlots: <CompanionAdSlot>[companionAd],
-    onAdRequestedFullscreen: (_) {
-      setState(() {
-        _isFullscreen = true;
-      });
-    },
-    onAdRequestedExitFullscreen: (_) {
-      setState(() {
-        _isFullscreen = false;
-      });
-    },
     onContainerAdded: (AdDisplayContainer container) {
       _adsLoader = AdsLoader(
         container: container,
@@ -239,59 +226,6 @@ class _VideoAdExampleScreenState extends State<VideoAdExampleScreen>
 
   @override
   Widget build(BuildContext context) {
-    final adPlayerWidget = !_contentVideoController.value.isInitialized
-        ? Container()
-        : AspectRatio(
-            aspectRatio: _contentVideoController.value.aspectRatio,
-            child: Stack(
-              children: <Widget>[
-                _adDisplayContainer,
-                if (_shouldShowContentVideo)
-                  VideoPlayer(_contentVideoController),
-              ],
-            ),
-          );
-
-    if (_isFullscreen) {
-      return Scaffold(
-        backgroundColor: Colors.black,
-        body: SafeArea(
-          child: Stack(
-            children: <Widget>[
-              Center(child: adPlayerWidget),
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Row(
-                  children: <Widget>[
-                    if (!_shouldShowContentVideo)
-                      IconButton(
-                        onPressed: _toggleMute,
-                        icon: Icon(
-                          _isAdMuted ? Icons.volume_off : Icons.volume_up,
-                          color: Colors.white,
-                        ),
-                      ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isFullscreen = false;
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.fullscreen_exit,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('IMA Test App'),
@@ -308,40 +242,33 @@ class _VideoAdExampleScreenState extends State<VideoAdExampleScreen>
             ),
             SizedBox(
               width: 300,
-              child: Stack(
-                children: <Widget>[
-                  adPlayerWidget,
-                  if (!_shouldShowContentVideo && _adsManager != null)
-                    Positioned(
-                      bottom: 8,
-                      right: 8,
-                      child: Row(
+              child: !_contentVideoController.value.isInitialized
+                  ? Container()
+                  : AspectRatio(
+                      aspectRatio: _contentVideoController.value.aspectRatio,
+                      child: Stack(
                         children: <Widget>[
-                          IconButton(
-                            onPressed: _toggleMute,
-                            icon: Icon(
-                              _isAdMuted ? Icons.volume_off : Icons.volume_up,
-                              color: Colors.white,
-                              size: 20,
+                          _adDisplayContainer,
+                          if (_shouldShowContentVideo)
+                            VideoPlayer(_contentVideoController),
+                          if (!_shouldShowContentVideo && _adsManager != null)
+                            Positioned(
+                              bottom: 8,
+                              right: 8,
+                              child: IconButton(
+                                onPressed: _toggleMute,
+                                icon: Icon(
+                                  _isAdMuted
+                                      ? Icons.volume_off
+                                      : Icons.volume_up,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ),
                             ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _isFullscreen = true;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.fullscreen,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                ],
-              ),
             ),
             ColoredBox(
               color: Colors.green,

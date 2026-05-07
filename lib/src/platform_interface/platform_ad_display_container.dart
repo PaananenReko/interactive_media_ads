@@ -46,8 +46,6 @@ base class PlatformAdDisplayContainerCreationParams {
   const PlatformAdDisplayContainerCreationParams({
     this.key,
     required this.onContainerAdded,
-    this.onAdRequestedFullscreen,
-    this.onAdRequestedExitFullscreen,
     this.layoutDirection = TextDirection.ltr,
     this.companionSlots = const <PlatformCompanionAdSlot>[],
   });
@@ -61,20 +59,6 @@ base class PlatformAdDisplayContainerCreationParams {
   /// Invoked when the View that contains the ad has been added to the platform
   /// view hierarchy.
   final void Function(PlatformAdDisplayContainer container) onContainerAdded;
-
-  /// Called when the ad requests entering fullscreen mode.
-  ///
-  /// The host app is responsible for expanding the ad container to fill the
-  /// screen when this callback is triggered.
-  final void Function(PlatformAdDisplayContainer container)?
-      onAdRequestedFullscreen;
-
-  /// Called when the ad requests exiting fullscreen mode.
-  ///
-  /// The host app is responsible for restoring the ad container to its original
-  /// size when this callback is triggered.
-  final void Function(PlatformAdDisplayContainer container)?
-      onAdRequestedExitFullscreen;
 
   /// The layout direction to use for the embedded AdDisplayContainer.
   final TextDirection layoutDirection;

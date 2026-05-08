@@ -465,11 +465,6 @@ abstract class AdsManager extends BaseManager {
   /// Resumes the current ad.
   void resume();
 
-  /// Sets the volume for the current ad.
-  ///
-  /// Volume value between 0 (mute) and 1 (maximum volume).
-  void setVolume(double volume);
-
   /// Skips the current ad.
   ///
   /// `AdsManager.skip()` only skips ads if IMA does not render the 'Skip ad'

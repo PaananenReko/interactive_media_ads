@@ -77,8 +77,9 @@ class AndroidAdsManager extends PlatformAdsManager {
   }
 
   @override
-  Future<void> setVolume(double volume) {
-    return _manager.setVolume(volume);
+  Future<void> setVolume(double volume) async {
+    // No-op on Android: the native IMA SDK on Android does not support
+    // runtime volume control via setVolume. Only iOS supports this.
   }
 
   @override

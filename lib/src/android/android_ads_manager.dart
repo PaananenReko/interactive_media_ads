@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 
 import '../platform_interface/platform_interface.dart';
+import 'android_ad_display_container.dart';
 import 'android_ads_rendering_settings.dart';
 import 'enum_converter_utils.dart';
 import 'interactive_media_ads.g.dart' as ima;
@@ -15,8 +16,9 @@ import 'interactive_media_ads.g.dart' as ima;
 class AndroidAdsManager extends PlatformAdsManager {
   /// Constructs an [AndroidAdsManager].
   @internal
-  AndroidAdsManager(ima.AdsManager manager)
+  AndroidAdsManager(ima.AdsManager manager, {AndroidAdDisplayContainer? container})
     : _manager = manager,
+      _container = container,
       super(
         adCuePoints: List<Duration>.unmodifiable(
           manager.adCuePoints.map((double seconds) {
@@ -28,6 +30,7 @@ class AndroidAdsManager extends PlatformAdsManager {
       );
 
   final ima.AdsManager _manager;
+  final AndroidAdDisplayContainer? _container;
 
   PlatformAdsManagerDelegate? _managerDelegate;
 
@@ -78,8 +81,7 @@ class AndroidAdsManager extends PlatformAdsManager {
 
   @override
   Future<void> setVolume(double volume) async {
-    // No-op on Android: the native IMA SDK on Android does not support
-    // runtime volume control via setVolume. Only iOS supports this.
+    await _container?.setVolume(volume);
   }
 
   @override

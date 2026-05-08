@@ -795,6 +795,12 @@ abstract class MediaPlayer {
 
   /// Stops playback after playback has been started or paused.
   void stop();
+
+  /// Sets the volume on this player.
+  ///
+  /// The values are clamped to 0.0 (silence) – 1.0 (unity gain) on each
+  /// channel.
+  void setVolume(double leftVolume, double rightVolume);
 }
 
 /// Callbacks that the player must fire.

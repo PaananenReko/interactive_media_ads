@@ -153,7 +153,11 @@ base class AndroidAdsLoader extends PlatformAdsLoader {
                   // which this plugin does not currently support.
                   // TODO(bparrishMines): Platform interface and app-facing
                   // interface should be updated to set this value as nullable.
-                  manager: AndroidAdsManager(manager),
+                  manager: AndroidAdsManager(
+                    manager,
+                    container: weakThis.target?.params.container
+                        as AndroidAdDisplayContainer?,
+                  ),
                 ),
               );
             } else {

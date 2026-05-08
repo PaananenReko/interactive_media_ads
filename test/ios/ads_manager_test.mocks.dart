@@ -117,6 +117,15 @@ class MockIMAAdsManager extends _i1.Mock implements _i2.IMAAdsManager {
           as _i3.Future<void>);
 
   @override
+  _i3.Future<void> setVolume(double? volume) =>
+      (super.noSuchMethod(
+            Invocation.method(#setVolume, [volume]),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
+
+  @override
   _i3.Future<void> skip() =>
       (super.noSuchMethod(
             Invocation.method(#skip, []),

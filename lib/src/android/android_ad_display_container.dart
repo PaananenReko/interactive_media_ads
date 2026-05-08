@@ -111,6 +111,9 @@ base class AndroidAdDisplayContainer extends PlatformAdDisplayContainer {
   // click-through.
   int _savedAdPosition = 0;
 
+  // Current volume level (0.0 = muted, 1.0 = full volume).
+  double _volume = 1.0;
+
   // Timer used to periodically update the IMA SDK of the progress of the
   // currently playing ad.
   Timer? _adProgressTimer;
@@ -128,6 +131,16 @@ base class AndroidAdDisplayContainer extends PlatformAdDisplayContainer {
       : AndroidAdDisplayContainerCreationParams.fromPlatformAdDisplayContainerCreationParams(
           params,
         );
+
+  /// Sets the volume for ad playback.
+  ///
+  /// [volume] is a value between 0.0 (muted) and 1.0 (full volume).
+  Future<void> setVolume(double volume) async {
+    _volume = volume;
+    final int imaVolume = (volume * 100).toInt();
+    await _videoAdPlayer.setVolume(imaVolume);
+    await _mediaPlayer?.setVolume(volume, volume);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -243,6 +256,7 @@ base class AndroidAdDisplayContainer extends PlatformAdDisplayContainer {
         if (container != null) {
           container._mediaPlayer = player;
           container._adDuration = await player.getDuration();
+          await player.setVolume(container._volume, container._volume);
           if (container._savedAdPosition > 0) {
             await player.seekTo(container._savedAdPosition);
           }

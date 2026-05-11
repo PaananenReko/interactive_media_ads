@@ -51,7 +51,7 @@ base class IOSAdDisplayContainer extends PlatformAdDisplayContainer {
   ///
   /// Created with the `UIView` that handles playing an ad.
   @internal
-  late final IMAAdDisplayContainer? adDisplayContainer;
+  IMAAdDisplayContainer? adDisplayContainer;
 
   late final IOSAdDisplayContainerCreationParams _iosParams =
       params is IOSAdDisplayContainerCreationParams
@@ -66,6 +66,7 @@ base class IOSAdDisplayContainer extends PlatformAdDisplayContainer {
       key: _iosParams.key,
       viewType: 'interactive_media_ads.packages.flutter.dev/view',
       onPlatformViewCreated: (_) async {
+        if (adDisplayContainer != null) return;
         adDisplayContainer = IMAAdDisplayContainer(
           adContainer: _controller.view,
           adContainerViewController: _controller,

@@ -411,6 +411,7 @@ class _AdPlayerState extends State<_AdPlayer> with WidgetsBindingObserver {
           widget.container._androidParams._platformViewsProxy,
       layoutDirection: widget.container._androidParams.layoutDirection,
       onPlatformViewCreated: () async {
+        if (widget.container.adDisplayContainer != null) return;
         final ima.AdDisplayContainer nativeContainer =
             await ima.ImaSdkFactory.createAdDisplayContainer(
               widget.container._frameLayout,
